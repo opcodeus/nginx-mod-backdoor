@@ -26,13 +26,6 @@
 
 ```
 $ ./build.sh
-[...]
-$ usage: build-nginx-backdoor-mod.sh [-l] [-r -n]
-
--l     list nginx releases
--r     choose release
--n     set name for the built nginx module
--h     print this help message and exit
 ```
 
 ## Usage
@@ -42,10 +35,10 @@ $ usage: build-nginx-backdoor-mod.sh [-l] [-r -n]
 ```
 $ ./build.sh
 [...]
-$ usage: build-nginx-backdoor-mod.sh [-l] [-r -n]
+usage: entrypoint.sh [-l] [-r -n]
 
 -l     list nginx releases
--r     choose release
+-r     set nginx release
 -n     set name for the built nginx module
 -h     print this help message and exit
 ```
@@ -55,7 +48,7 @@ $ usage: build-nginx-backdoor-mod.sh [-l] [-r -n]
 #### List available Nginx releases
 
 ```
-$ ./build-nginx-backdoor-mod.sh -l
+$ ./build.sh -l
 [inf] releases provided by nginx.org
 nginx-1.24.0.tar.gz
 nginx-1.25.0.tar.gz
